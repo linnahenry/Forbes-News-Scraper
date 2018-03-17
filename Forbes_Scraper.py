@@ -253,7 +253,7 @@ def process_article(url):
 
  
 
-#results = Parallel(n_jobs=-1)(delayed(process_article)(url) for url in tqdm(appended_data2))
+results = Parallel(n_jobs=-1)(delayed(process_article)(url) for url in tqdm(appended_data2))
 
  
 
@@ -267,7 +267,7 @@ def process_article(url):
 
  
 
-results = [process_article(x) for x in list(appended_data2)]
+#results = [process_article(x) for x in list(appended_data2)]
 
  
 
@@ -277,5 +277,42 @@ results = [x for x in results if x is not None]
 
 results_df = pd.DataFrame(results)
 
-results_df.to_csv('forbes_output.csv', index=False
+results_df.to_csv('forbes_output.csv', index=False)
+
+
+url_list = list(appended_data)
+
+driver = webdriver.Chrome()
+forbes_views = []
+for x in range(0, len(url_list)):
+    driver.get(url_list[x])
+    try:
+        driver.find_element_by_css_selector('.continue-button').click()
+    except:
+        wait_for_internet_connection()
+        time.sleep(0.1)
+        continue
+    vwc = driver.find_element_by_css_selector('.view-count').get_attribute("innerHTML")
+    vwc = vwc.split('\n')[0].replace(',', '')
+    vwc = int(vwc)
+    forbes_views = forbes_views + [vwc]
+
+    
+
+f_views = pd.DataFrame()
+f_views['urls'] = url_list
+f_views['views'] = forbes_views
+
+results_df2 = pd.merge(results_df, f_views, how = 'left', left_on = 'url', right_on = 'urls')
+
+
+
+
+
+
+
+
+
+
+
 
