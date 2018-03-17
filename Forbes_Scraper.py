@@ -93,7 +93,6 @@ driver = webdriver.Chrome()
 
 #adblock:
 
-#chrome_options.add_extension('/Users/elipickh/Downloads/extension_1_13_3.crx')
 
 #chrome_options.add_argument('headless')
 
@@ -241,7 +240,6 @@ def process_article(url):
 
 #adblock:
 
-#chrome_options.add_extension('/Users/elipickh/Downloads/extension_1_13_3.crx')
 
 #chrome_options.add_argument('headless')
 
